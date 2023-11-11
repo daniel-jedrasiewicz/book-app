@@ -34,9 +34,13 @@ Wykonaj migracje:
 
 - php artisan migrate
 
+Wygeneruj klucz poleceniem:
+
+- php artisan key:generate
+
 Uruchom serwer deweloperski:
 
-  -php artisan serve
+ - php artisan serve
 
 
 ### Użycie
