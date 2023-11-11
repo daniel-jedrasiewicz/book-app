@@ -34,17 +34,17 @@
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->description }}</td>
                         <td class="text-right">
+                            <a class="btn btn-success btn-xs"
+                               href="{{ route('books.show', $book) }}"> Szczegóły </a>
                             <a class="btn btn-info btn-xs"
-                               href="{{ route('books.edit', $book) }}"><i
-                                    class="fas fa-pencil-alt"></i> Edycja </a>
+                               href="{{ route('books.edit', $book) }}">Edycja </a>
                             <form class="d-inline" method="POST"
                                   action="{{ route('books.destroy', $book) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-xs"
                                         onclick="return confirm('Czy napewno chcesz usunąć książkę?')">
-                                    <i
-                                        class="fas fa-times"></i> Usuń
+                                     Usuń
                                 </button>
                             </form>
                         </td>
