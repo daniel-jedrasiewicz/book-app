@@ -23,6 +23,7 @@
                     <th scope="col">Autor</th>
                     <th scope="col">Tytuł Książki</th>
                     <th scope="col">Opis</th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,6 +33,18 @@
                         <td>{{ $book->author->name }} {{ $book->author->surname }} </td>
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->description }}</td>
+                        <td class="text-right">
+                            <form class="d-inline" method="POST"
+                                  action="{{ route('books.destroy', $book) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-xs"
+                                        onclick="return confirm('Czy napewno chcesz usunąć książkę?')">
+                                    <i
+                                        class="fas fa-times"></i> Usuń
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @empty
                     <td class="text-center" colspan="4">Brak wyników</td>
