@@ -34,6 +34,9 @@
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->description }}</td>
                         <td class="text-right">
+                            <a class="btn btn-info btn-xs"
+                               href="{{ route('books.edit', $book) }}"><i
+                                    class="fas fa-pencil-alt"></i> Edycja </a>
                             <form class="d-inline" method="POST"
                                   action="{{ route('books.destroy', $book) }}">
                                 @csrf

@@ -41,7 +41,6 @@ class BookTest extends TestCase
 
     public function testDeleteBook()
     {
-
         $book = Book::factory()->create();
 
         $response = $this->delete(route('books.destroy', ['book' => $book]));
@@ -49,5 +48,36 @@ class BookTest extends TestCase
         $response->assertStatus(302);
 
         $this->assertDatabaseMissing('books', ['id' => $book->id]);
+    }
+
+    public function testUpdateBook()
+    {
+        $book = Book::factory()->create();
+
+        $author = Author::create([
+            'name' => $this->faker->firstName,
+            'surname' => $this->faker->lastName,
+        ]);
+
+        $updatedData = [
+            'book' => [
+                'title' => $this->faker->sentence,
+                'description' => $this->faker->paragraph,
+            ],
+            'author_id' => $author->id,
+        ];
+
+        $response = $this->put(route('books.update', ['book' => $book]), $updatedData);
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('books.index'));
+
+        $this->assertDatabaseCount('books', 1);
+
+        $updatedBook = Book::find($book->id);
+
+        $this->assertEquals($updatedData['book']['title'], $updatedBook->title);
+        $this->assertEquals($updatedData['book']['description'], $updatedBook->description);
+        $this->assertEquals($updatedData['author_id'], $updatedBook->author_id);
     }
 }

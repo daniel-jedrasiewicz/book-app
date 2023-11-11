@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Author;
 use App\Models\Book;
-use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -43,14 +43,21 @@ class BookController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Book $book)
     {
-        //
+        $authors = Author::get();
+
+        return view('books.edit', compact('book', 'authors'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        //
+        $validated = $request->validated();
+        $authorId = intval($validated['author_id']);
+
+        $book->update($this->getBook($validated, $authorId));
+
+        return redirect()->route('books.index');
     }
 
     public function destroy(Book $book)
