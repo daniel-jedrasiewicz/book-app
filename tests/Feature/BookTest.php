@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -36,5 +37,17 @@ class BookTest extends TestCase
         $response->assertRedirect(route('books.index'));
 
         $this->assertDatabaseCount('books', 1);
+    }
+
+    public function testDeleteBook()
+    {
+
+        $book = Book::factory()->create();
+
+        $response = $this->delete(route('books.destroy', ['book' => $book]));
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('books', ['id' => $book->id]);
     }
 }

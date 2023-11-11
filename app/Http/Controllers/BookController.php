@@ -53,9 +53,11 @@ class BookController extends Controller
         //
     }
 
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
-        //
+        $book->delete();
+
+        return redirect()->route('books.index');
     }
 
     private function getAuthor(array $data): array
