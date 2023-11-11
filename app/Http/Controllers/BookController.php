@@ -6,20 +6,26 @@ use App\Http\Requests\BookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Author;
 use App\Models\Book;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $books = $this->paginateBooks($perPage = $request->input('perPage', 10), $request->input('page', 1));
+
         return view('books.index', [
-            'books' => Book::with('author')->get(),
+            'books' => $books['data'],
+            'totalPages' => $books['totalPages'],
+            'currentPage' => $books['currentPage'],
+            'perPage' => $perPage,
         ]);
     }
 
     public function create()
     {
         return view('books.create', [
-           'authors' => Author::get(),
+            'authors' => Author::get(),
         ]);
     }
 
@@ -82,6 +88,22 @@ class BookController extends Controller
             'title' => $data['book']['title'],
             'description' => $data['book']['description'],
             'author_id' => $authorId
+        ];
+    }
+
+    private function paginateBooks(int $perPage = 10, int $currentPage = 1): array
+    {
+        $allBooks = Book::all();
+        $totalPages = ceil($allBooks->count() / $perPage);
+
+        $startIndex = ($currentPage - 1) * $perPage;
+
+        $paginatedBooks = $allBooks->slice($startIndex, $perPage);
+
+        return [
+            'data' => $paginatedBooks,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
         ];
     }
 }

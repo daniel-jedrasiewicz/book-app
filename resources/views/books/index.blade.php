@@ -54,6 +54,15 @@
                 @endforelse
                 </tbody>
             </table>
+            <div>
+                @if ($totalPages > 1)
+                    <div>
+                        @for ($i = 1; $i <= $totalPages; $i++)
+                            <a href="{{ route('books.index', ['page' => $i, 'perPage' => $perPage]) }}" {{ $i == $currentPage ? 'style=color:red;' : '' }}>{{ $i }}</a>
+                        @endfor
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 
